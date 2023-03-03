@@ -11,5 +11,7 @@ namespace IMDBInsert
         public string tconst { get; set; }
         public string primaryTitle { get; set; }
         public string originalTitle { get; set; }
+        public int startYear { get; set; }
+        public int? endYear { get; set; }
     }
 }

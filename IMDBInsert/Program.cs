@@ -1,9 +1,10 @@
 ﻿using IMDBInsert;
+using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 
 Console.WriteLine("Press 1 for delete, 2 for normal insert, " +
     "3 for prepared insert");
-Console.WriteLine("5 for bulk insert");
+Console.WriteLine("4 for Entity, 5 for bulk insert");
 string action = Console.ReadLine();
 
 
@@ -34,9 +35,10 @@ Console.WriteLine("Amount of titles: " + titles.Count());
 before = DateTime.Now;
 
 using (SqlConnection sqlConn = new SqlConnection(
-    "server=localhost;database=IMDB;User ID=imdbuser;password=superSecret;"))
+    "server=localhost;database=IMDB;User ID=imdbuser;password=superSecret;" +
+    "TrustServerCertificate=True"))
 {
-    sqlConn.Open();
+    //sqlConn.Open();
 
     switch (action)
     {
@@ -51,11 +53,16 @@ using (SqlConnection sqlConn = new SqlConnection(
             IInserter inserter2 = new PreparedInserter();
             inserter2.InsertTitles(sqlConn, titles);
             break;
-        case "5":
-            IInserter inserter3 = new BulkInserter();
+        case "4":
+            IInserter inserter3 = new EFInserter();
             inserter3.InsertTitles(sqlConn, titles);
             break;
+        case "5":
+            IInserter inserter4 = new BulkInserter();
+            inserter4.InsertTitles(sqlConn, titles);
+            break;
     }
+
 }
 after = DateTime.Now;
 
